@@ -1,5 +1,6 @@
 package com.biblioteca.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -10,6 +11,12 @@ public class Conexao {
     private static final String URL = "jdbc:sqlite:src/main/resources/db/biblioteca.db";
 
     public static Connection connect() {
+
+        String path = "src/main/resources/db/";
+        File diretorio = new File(path);
+        if (!diretorio.exists()) {
+            diretorio.mkdirs();
+        }
         Connection conn = null;
         try {
             conn = DriverManager.getConnection(URL);
