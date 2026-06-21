@@ -12,8 +12,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -139,5 +141,40 @@ public class TelaPrincipalController {
         List<Livro> resultados = livroDAO.buscarComFiltros(titulo, autor, codigo, status);
         ObservableList<Livro> listaExibicao = FXCollections.observableArrayList(resultados);
         tabelaLivros.setItems(listaExibicao);
+    }
+
+    @FXML
+    private void handleImportarExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Planilha de Livros (Excel)");
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Planilhas do Excel (*.xlsx)", "*.xlsx")
+        );
+
+        Stage stage = (Stage) tabelaLivros.getScene().getWindow();
+        File arquivoSelecionado = fileChooser.showOpenDialog(stage);
+
+        if (arquivoSelecionado != null) {
+
+            int livrosImportados = com.biblioteca.utils.ExcelUtils.importarLivros(arquivoSelecionado.getAbsolutePath());
+
+            if (livrosImportados > 0) {
+                exibirAlerta("Importação Concluída", "Sucesso! " + livrosImportados + " livros foram processados/atualizados no sistema.");
+                atualizarTabela();
+            } else if (livrosImportados == 0) {
+                exibirAlerta("Aviso", "Nenhum livro novo foi importado. Verifique os códigos ou se a tabela possui dados válidos.");
+            } else {
+                exibirAlerta("Erro", "Falha técnica ao processar a planilha.");
+            }
+        }
+    }
+
+    private void exibirAlerta(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

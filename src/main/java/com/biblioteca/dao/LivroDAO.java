@@ -108,4 +108,21 @@ public class LivroDAO {
         }
         return livros;
     }
+
+    public boolean atualizar(Livro livro) {
+        String sql = "UPDATE livros SET titulo = ?, autor = ? WHERE codigo = ?";
+        try (Connection conn = Conexao.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, livro.getTitulo());
+            pstmt.setString(2, livro.getAutor());
+            pstmt.setString(3, livro.getCodigo());
+
+            int linhasAfetadas = pstmt.executeUpdate();
+            return linhasAfetadas > 0;
+        } catch (SQLException e) {
+            System.err.println("Erro ao atualizar livro: " + e.getMessage());
+            return false;
+        }
+    }
 }

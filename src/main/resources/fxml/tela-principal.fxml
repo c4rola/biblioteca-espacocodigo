@@ -29,11 +29,12 @@
                                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                                     </columnResizePolicy>
                                 </TableView>
-                                <HBox alignment="BOTTOM_LEFT" prefHeight="28.0" prefWidth="224.0" spacing="5.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
+                                <HBox alignment="BOTTOM_LEFT" prefHeight="28.0" prefWidth="324.0" spacing="5.0" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0">
                                     <children>
                                         <Button mnemonicParsing="false" onAction="#abrirModalLivro" text="Novo Livro" />
                                         <Button mnemonicParsing="false" onAction="#atualizarTabela" text="Atualizar lista" />
                                         <Button mnemonicParsing="false" onAction="#excluirLivro" prefHeight="26.0" prefWidth="50.0" text="Excluir" />
+                              <Button mnemonicParsing="false" onAction="#handleImportarExcel" text="Importar livros" />
                                     </children>
                                 </HBox>
                                 <HBox alignment="TOP_CENTER" layoutX="76.0" layoutY="67.0" prefHeight="26.0" prefWidth="690.0" spacing="20.0" AnchorPane.bottomAnchor="566.0" AnchorPane.leftAnchor="76.0" AnchorPane.rightAnchor="76.0" AnchorPane.topAnchor="67.0">

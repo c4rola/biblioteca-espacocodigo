@@ -26,6 +26,9 @@ public class Livro {
     public String getCodigo() { return codigo; }
     public String getTitulo() { return titulo; }
     public String getAutor() { return autor; }
+    public void setTitulo(String titulo) {this.titulo = titulo;}
+    public void setAutor(String autor) {this.autor = autor;}
+
     public boolean isDisponivel() { return disponivel; }
     public void setDisponivel(boolean disponivel) { this.disponivel = disponivel; }
 }
