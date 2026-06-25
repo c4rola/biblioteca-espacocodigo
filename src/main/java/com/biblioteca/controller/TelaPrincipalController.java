@@ -2,6 +2,7 @@ package com.biblioteca.controller;
 
 import com.biblioteca.dao.LivroDAO;
 import com.biblioteca.model.Livro;
+import com.biblioteca.model.Usuario;
 import com.biblioteca.utils.ComponenteUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -13,6 +14,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -75,6 +77,16 @@ public class TelaPrincipalController {
             if (isSelected) {
                 atualizarTabela();
             }
+        });
+
+        tabelaLivros.setRowFactory(tv -> {
+            TableRow<Livro> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    abrirModalDetalhes(row.getItem());
+                }
+            });
+            return row;
         });
 
         atualizarTabela();
@@ -167,6 +179,24 @@ public class TelaPrincipalController {
             } else {
                 exibirAlerta("Erro", "Falha técnica ao processar a planilha.");
             }
+        }
+    }
+
+    private void abrirModalDetalhes(Livro livro) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modal-detalhes-livro.fxml"));
+            Parent root = loader.load();
+            ModalDetalhesLivroController controller = loader.getController();
+            controller.setLivro(livro);
+
+            Stage stage = new Stage();
+            stage.setTitle("Detalhes do Livro: " + livro.getTitulo());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            atualizarTabela();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
