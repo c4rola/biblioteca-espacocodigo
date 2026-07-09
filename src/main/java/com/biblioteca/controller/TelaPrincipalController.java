@@ -2,6 +2,7 @@ package com.biblioteca.controller;
 
 import com.biblioteca.dao.LivroDAO;
 import com.biblioteca.model.Livro;
+import com.biblioteca.model.Usuario;
 import com.biblioteca.utils.ComponenteUtils;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
@@ -12,8 +13,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -73,6 +77,16 @@ public class TelaPrincipalController {
             if (isSelected) {
                 atualizarTabela();
             }
+        });
+
+        tabelaLivros.setRowFactory(tv -> {
+            TableRow<Livro> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && (!row.isEmpty())) {
+                    abrirModalDetalhes(row.getItem());
+                }
+            });
+            return row;
         });
 
         atualizarTabela();
@@ -139,5 +153,58 @@ public class TelaPrincipalController {
         List<Livro> resultados = livroDAO.buscarComFiltros(titulo, autor, codigo, status);
         ObservableList<Livro> listaExibicao = FXCollections.observableArrayList(resultados);
         tabelaLivros.setItems(listaExibicao);
+    }
+
+    @FXML
+    private void handleImportarExcel() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Planilha de Livros (Excel)");
+
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Planilhas do Excel (*.xlsx)", "*.xlsx")
+        );
+
+        Stage stage = (Stage) tabelaLivros.getScene().getWindow();
+        File arquivoSelecionado = fileChooser.showOpenDialog(stage);
+
+        if (arquivoSelecionado != null) {
+
+            int livrosImportados = com.biblioteca.utils.ExcelUtils.importarLivros(arquivoSelecionado.getAbsolutePath());
+
+            if (livrosImportados > 0) {
+                exibirAlerta("Importação Concluída", "Sucesso! " + livrosImportados + " livros foram processados/atualizados no sistema.");
+                atualizarTabela();
+            } else if (livrosImportados == 0) {
+                exibirAlerta("Aviso", "Nenhum livro novo foi importado. Verifique os códigos ou se a tabela possui dados válidos.");
+            } else {
+                exibirAlerta("Erro", "Falha técnica ao processar a planilha.");
+            }
+        }
+    }
+
+    private void abrirModalDetalhes(Livro livro) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/modal-detalhes-livro.fxml"));
+            Parent root = loader.load();
+            ModalDetalhesLivroController controller = loader.getController();
+            controller.setLivro(livro);
+
+            Stage stage = new Stage();
+            stage.setTitle("Detalhes do Livro: " + livro.getTitulo());
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            atualizarTabela();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void exibirAlerta(String titulo, String mensagem) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(titulo);
+        alert.setHeaderText(null);
+        alert.setContentText(mensagem);
+        alert.showAndWait();
     }
 }

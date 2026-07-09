@@ -1,5 +1,6 @@
 package com.biblioteca.dao;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,18 +8,30 @@ import java.sql.Statement;
 
 public class Conexao {
 
-    private static final String URL = "jdbc:sqlite:src/main/resources/db/biblioteca.db";
+    private static String getDBPath() {
+        String userHome = System.getProperty("user.home");
+        String appFolder = new File(userHome, "BibliotecaMarcusFélix").getAbsolutePath();
+
+        File dir = new File(appFolder);
+        if (!dir.exists()) {
+            if (!dir.mkdirs()) {
+                System.err.println("Erro: não foi possível criar a pasta " + appFolder);
+            }
+        }
+
+        String dbPath = new File(dir, "biblioteca.db").getAbsolutePath();
+        return "jdbc:sqlite:" + dbPath;
+    }
 
     public static Connection connect() {
         Connection conn = null;
         try {
-            conn = DriverManager.getConnection(URL);
+            conn = DriverManager.getConnection(getDBPath());
         } catch (SQLException e) {
             System.err.println("Erro ao conectar ao SQLite: " + e.getMessage());
         }
         return conn;
     }
-
     public static void criarTabelasIniciais() {
         String sqlLivros = """
         CREATE TABLE IF NOT EXISTS livros (

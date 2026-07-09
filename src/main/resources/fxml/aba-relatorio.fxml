@@ -10,31 +10,31 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="688.0" prefWidth="882.0" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.biblioteca.controller.RelatorioController">
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
-   <children>
-      <HBox alignment="CENTER" prefHeight="33.0" prefWidth="842.0" spacing="10.0">
-         <children>
-            <Label text="Buscar por:" />
-            <ComboBox fx:id="comboOpcaoBusca" prefWidth="150.0" />
-            <TextField fx:id="txtBusca" promptText="Digite sua busca..." />
-            <CheckBox fx:id="checkAtrasados" mnemonicParsing="false" text="Apenas atrasados" />
-         </children>
-      </HBox>
-      <TableView fx:id="tabelaRelatorio" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
-        <columns>
-          <TableColumn fx:id="colCodigo" prefWidth="115.20001602172852" text="Código" />
-          <TableColumn fx:id="colTitulo" prefWidth="165.59996032714844" text="Título" />
-            <TableColumn fx:id="colUsuario" prefWidth="243.20001220703125" text="Usuário" />
-            <TableColumn fx:id="colDataSaida" prefWidth="104.0" text="Empréstimo" />
-            <TableColumn fx:id="colDataPrevista" prefWidth="119.99993896484375" text="Devolução Prevista" />
-            <TableColumn fx:id="colStatus" prefWidth="99.2000732421875" text="Status" />
-        </columns>
-         <columnResizePolicy>
-            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-         </columnResizePolicy>
-      </TableView>
-   </children>
+<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" spacing="15.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.biblioteca.controller.RelatorioController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+    <children>
+        <HBox alignment="TOP_CENTER" prefHeight="33.0" prefWidth="842.0" spacing="10.0">
+            <children>
+                <Label text="Buscar por:" />
+                <ComboBox fx:id="comboOpcaoBusca" prefWidth="150.0" />
+                <TextField fx:id="txtBusca" promptText="Digite sua busca..." />
+                <CheckBox fx:id="checkAtrasados" mnemonicParsing="false" text="Apenas atrasados" />
+            </children>
+        </HBox>
+        <TableView fx:id="tabelaRelatorio" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+            <columns>
+                <TableColumn fx:id="colCodigo" prefWidth="115.20001602172852" text="Código" />
+                <TableColumn fx:id="colTitulo" prefWidth="165.59996032714844" text="Título" />
+                <TableColumn fx:id="colUsuario" prefWidth="243.20001220703125" text="Usuário" />
+                <TableColumn fx:id="colDataSaida" prefWidth="104.0" text="Empréstimo" />
+                <TableColumn fx:id="colDataPrevista" prefWidth="119.99993896484375" text="Devolução Prevista" />
+                <TableColumn fx:id="colStatus" prefWidth="99.2000732421875" text="Status" />
+            </columns>
+            <columnResizePolicy>
+                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+            </columnResizePolicy>
+        </TableView>
+    </children>
 </VBox>
