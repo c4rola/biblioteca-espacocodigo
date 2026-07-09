@@ -13,6 +13,7 @@ Além de atender a uma demanda prática, este projeto também representa uma opo
 * Cadastro de livros
 * Cadastro de usuários
 * Consulta ao acervo
+* Cadastro de livros em lote (Importação de arquivo .xlsx)
 * Consulta a status de usuários cadastrados
 * Edição e remoção de registros
 * Controle de empréstimos
